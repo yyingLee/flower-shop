@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>缤纷花坊 - 在线花店</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="header">
+        <div class="top-bar">
+            <div class="logo">🌸 缤纷花坊</div>
+            
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="搜索鲜花...">
+            </div>
+            
+            <div class="user">
+                <span>欢迎您，<span id="username"></span></span>
+                <button class="category-btn" onclick="logout()">退出登录</button>
+            </div>
+        </div>
+        
+       
+    </div>
+    <div class="nav">
+        <button onclick="showSection('home')">🏠 首页</button>
+        <button onclick="toggleCart()">🛒 购物车</button>
+        <button onclick="showOrders()">📦 我的订单</button>
+        <button onclick="showAddress()">📍 配送地址</button>
+</div>
+           
+    <!-- 添加轮播图容器 -->
+    <div class="carousel-container">
+            <div class="carousel-slides">
+                <div class="slide active">
+                    <img src="./images/rose1.jpg" alt="浪漫玫瑰系列">
+                    <div class="slide-caption">
+                        <h3>浪漫玫瑰系列</h3>
+                        <p>精选顶级玫瑰，传递真挚情感</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="./images/xrk.jpg" alt="阳光向日葵">
+                    <div class="slide-caption">
+                        <h3>阳光向日葵</h3>
+                        <p>向日葵代表着阳光与希望</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="./images/knx.jpg" alt="纯洁百合">
+                    <div class="slide-caption">
+                        <h3>康乃馨花束</h3>
+                        <p>热烈的爱与深深的思念</p>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- 轮播指示器 -->
+            <div class="carousel-indicators">
+                <span class="indicator active"></span>
+                <span class="indicator"></span>
+                <span class="indicator"></span>
+            </div>
+        </div>
+    <div id="home" class="section">
+        <div><h2 class="section-title">🌸 精选鲜花推荐</h2></div>
+        <div class="product-grid" id="productList"></div>
+            <!-- 直接在HTML中写死所有商品 -->
+            
+    </div>
+    
+    <!-- 购物车弹窗 -->
+    <div class="modal" id="cartModal">
+        <div class="modal-header">
+            <h2>🛒 我的购物车</h2>
+            <button class="close-modal" onclick="toggleCart()">×</button>
+        </div>
+        <div class="modal-content" id="cartItems">
+            <!-- 购物车商品将在这里动态渲染 -->
+        </div>
+        <div class="modal-footer">
+            <div class="total-price">总价：￥<span id="cartTotal">0.00</span></div>
+            <button class="action-btn" onclick="showPayment()">确认付款</button>
+        </div>
+    </div>
+    
+    
+    <!-- 订单弹窗 -->
+    <div class="modal" id="ordersModal">
+        <div class="modal-header">
+            <h2>📦 我的订单</h2>
+            <button class="close-modal" onclick="hideOrders()">×</button>
+        </div>
+        <div class="modal-content" id="ordersList">
+            <!-- 订单将在这里动态渲染 -->
+        </div>
+    </div>
+    
+    <!-- 地址弹窗 -->
+    <div class="modal" id="addressModal">
+        <div class="modal-header">
+            <h2>📍 配送地址</h2>
+            <button class="close-modal" onclick="hideAddress()">×</button>
+        </div>
+        <div class="modal-content">
+            <form class="address-form" id="addressForm">
+                <div class="form-group">
+                    <label for="recipient">收件人</label>
+                    <input type="text" id="recipient" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">联系电话</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">详细地址</label>
+                    <textarea id="address" required></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="action-btn" onclick="saveAddress()">保存地址</button>
+        </div>
+    </div>
+    
+    
+    <!-- 商品模板 -->
+    <template id="productTemplate">
+        <div class="product-card">
+            <img class="product-img" src="" alt="">
+            <div style="padding: 10px;">
+                <h3 class="product-name"></h3>
+                <p class="product-desc"></p>
+                <div class="product-price">
+                    <span>￥{{price}}</span>
+					<span class="stock-info">库存: {{stock}}</span> <!-- 添加库存显示 -->
+                    <button onclick="addToCart('{{id}}')">💐 加入购物车</button>
+					
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- 订单模板 -->
+    <template id="orderTemplate">
+        <div class="order-item">
+            <img src="" alt="">
+            <div class="item-info">
+                <h4 class="item-name"></h4>
+                <p class="item-price"></p>
+                <p>数量: <span class="item-quantity"></span></p>
+            </div>
+        </div>
+    </template>
+    
+	
+	<!-- 底部页脚 -->
+	<footer>
+		<div style="display: flex;
+		justify-content: space-around;
+		align-items: center;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 15px;">
+		<div class="footer-box">
+			<img src="./images/flower.jpg" style="height: 10vh;width: auto">
+			<p>联系我们</p>
+		</div>
+		<div class="footer-box">
+			<p>问题反馈</p>
+			<p>邮箱地址：123@123.com</p>
+		</div>
+		<div class="footer-box">
+			<p>更多信息</p>
+		</div>
+		<div class="footer-box">
+			<img src="./images/ewm.png" style="height: 10vh;width: auto">
+			<p>扫一扫</p>
+		</div>
+		</div>
+		<p>25216950604李钰滢版权所有 © 2025 🌸 缤纷花坊</p>	
+    </footer>
+
+<script src="./script.js"></script>
+</body>
+</html>

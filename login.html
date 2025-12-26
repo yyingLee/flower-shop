@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🌸 缤纷花坊 - 登录</title>
+    <style>
+        /* 基础页面样式 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom right, #FFDEEB, #E7EBDB,#F8D6E5,#fcc2d7);
+            background-size: 800% 800%;  /* 关键：8倍放大 */
+            animation: gradientBG 10s ease infinite;
+            /* 动画名称 | 持续时间 | 缓动函数 | 无限循环 */
+        }
+        
+        /* 背景动画效果 */
+        @keyframes gradientBG {
+            0% { background-position: 10% 50%; }  /* 控制渐变背景的显示区域 */
+            50% { background-position: 100% 50%; }
+            100% { background-position: 10% 50%; }
+        }
+        
+        /* 登录框容器样式 */
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        /* 输入框通用样式 */
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            box-sizing: border-box;
+        }
+        
+        /* 按钮样式 */
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        /* 切换表单链接样式 */
+        .switch-form {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
+        
+        .switch-form a {
+            color: #ff6b6b;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        /* 密码显示切换按钮 */
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #666;
+            padding: 0;
+            width: auto;
+        }
+        
+        /* 验证码容器 */
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .captcha-input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        /* 验证码显示区域 */
+        .captcha-image {
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+    </style>
+    <link rel="stylesheet" href="./index.html">
+</head>
+<body>
+    <!-- 登录表单容器 -->
+    <div class="login-container">
+        <!-- 登录表单 -->
+        <div id="loginForm">
+            <h2>用户登录</h2>
+            <div class="form-group">
+                <label for="loginUsername">用户名</label>
+                <input type="text" id="loginUsername" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码">
+                <!-- 密码显示切换按钮 -->
+                <button class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
+            </div>
+           
+            
+            <!-- <a href="./index.html"><button>立即登录</button></a> -->
+             <button onclick="login()">立即登录</button>
+            <div class="switch-form">
+                没有账号？<a onclick="showRegister()">立即注册</a>
+            </div>
+        </div>
+    
+    </div>
+
+    
+</body>
+
+<script>
+
+
+function login() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    
+    //简单验证
+    if (!username || !password) {
+        alert('请输入用户名和密码');
+        return;
+    }
+    
+    if (username === 'admin' && password === '12345678') {
+        //保存登录状态
+        localStorage.setItem('currentUser', username);
+        
+        window.location.href = 'index.html';
+    } else {
+        alert('用户名或密码错误\n提示：用户名为 admin，密码为 12345678');
+    }
+}
+</script>
+
+</html>
